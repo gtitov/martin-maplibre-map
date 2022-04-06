@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // https://api.mapbox.com/v4/{tileset_id}/{zoom}/{x}/{y}.{format} --- {zoom} > {z}, {format} > mvt
         map.addSource('grid', {
             'type': 'vector',
-            "tiles": ["http://localhost:3000/public.grid/{z}/{x}/{y}.pbf"]
+            "tiles": ["http://localhost:3000/public.grid/{z}/{x}/{y}.pbf"],
+            "promoteId": "gid"  // DOCS: https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/#vector-promoteId
         });
         map.addLayer(
             {
@@ -40,6 +41,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         '#1f968b',
                         80,
                         '#fde725'
+                    ],
+                    'fill-outline-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'hover'], false],
+                        "cyan",
+                        "transparent"
                     ]
                 }
             }
@@ -59,13 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
             'paint': {
                 'circle-stroke-width': 1,
                 'circle-stroke-color': '#FFFFFF',
-                // DOCS: https://docs.mapbox.com/help/tutorials/mapbox-gl-js-expressions/
-                // SELECT MIN(total_points), MAX(total_points) FROM cities
                 'circle-color': '#1a9641',
                 'circle-opacity': 0.8,
-                // 'circle-radius': ['/', ['get', 'people_count'], 100]
-                // DOCS: https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/
-                // SELECT DISTINCT group_name FROM cities
                 'circle-radius': 6
             }
         });
@@ -85,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         });
 
-        const popup = new maplibregl.Popup({
+        var popup = new maplibregl.Popup({
             closeButton: false,
             closeOnClick: false
         });
@@ -107,12 +109,59 @@ document.addEventListener('DOMContentLoaded', function () {
             popup.remove();
         });
 
+        var hoveredStateId = null;
+        map.on('mousemove', 'grid-layer', (e) => {
+            if (e.features.length > 0) {
+                // console.log(e.features[0])
+                if (hoveredStateId !== null) {
+                    map.setFeatureState(
+                        {
+                            source: 'grid',
+                            sourceLayer: 'public.grid',
+                            id: hoveredStateId
+                        },
+                        { hover: false }
+                    );
+                }
+                hoveredStateId = e.features[0].id
+                map.setFeatureState(
+                    {
+                        source: 'grid',
+                        sourceLayer: 'public.grid',
+                        id: hoveredStateId
+                    },
+                    { hover: true }
+                );
+            }
+        });
 
+        map.on('mouseleave', 'grid-layer', () => {
+            if (hoveredStateId !== null) {
+                map.setFeatureState(
+                    {
+                        source: 'grid',
+                        sourceLayer: 'public.grid',
+                        id: hoveredStateId
+                    },
+                    { hover: false }
+                );
+            }
+            hoveredStateId = null;
+        });
 
-        // Modal
-        var modalInteractive = new bootstrap.Modal(document.getElementById("popup-modal"), {
-            keyboard: false
-        })
+        map.on('click', 'grid-layer', (e) => {
+            map.flyTo({
+                center: e.lngLat,
+                zoom: 9
+            });
+        });
+
+        map.on('dblclick', 'grid-layer', (e) => {
+            new maplibregl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(`Число ойконимов: ${e.features[0].properties.n}`)
+                .addTo(map);
+        });
     })
 })
 
