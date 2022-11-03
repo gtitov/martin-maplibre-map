@@ -3,3 +3,4 @@ __pycache__/
 .deta/
 data/
 .Rproj.user
+.vscode
