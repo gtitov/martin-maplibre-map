@@ -14,6 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     map.on('load', function () {
+        // Raster basemap from Mapbox
+        // map.addSource('basemap', {
+        //     'type': 'raster',
+        //     'tiles': ['https://api.mapbox.com/styles/v1/ghermant/cl9n3adsz002114o7irgcouyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ2hlcm1hbnQiLCJhIjoiY2pncDUwcnRmNDQ4ZjJ4czdjZXMzaHZpNyJ9.3rFyYRRtvLUngHm027HZ7A']
+        // })
+
+        // map.addLayer({
+        //     "id": "basemap-layer",
+        //     "type": "raster",
+        //     "source": "basemap",
+        //     "paint": {}
+        // })
 
         // DOCS: https://docs.mapbox.com/api/maps/vector-tiles/
         // https://api.mapbox.com/v4/{tileset_id}/{zoom}/{x}/{y}.{format} --- {zoom} > {z}, {format} > mvt
