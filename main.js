@@ -135,4 +135,7 @@ map.on("load", () => {
     map.on('mouseleave', 'grid-layer', () => {
         map.getCanvas().style.cursor = ''
     })
+
+
+    map.addControl(new maplibregl.ScaleControl())
 })
