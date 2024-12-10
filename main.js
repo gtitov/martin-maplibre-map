@@ -10,6 +10,11 @@ const map = new maplibregl.Map({
 
 map.on("load", () => {
 
+    document.getElementById("filter").addEventListener("input", (e) => {
+        filterValue = parseInt(e.target.value)
+        map.setFilter("grid-layer", ["<", ["to-number", ["get", "sum_pop"]], filterValue])
+    })
+
     map.addSource("grid", {
         type: "vector",
         url: "http://localhost:3000/grid",
