@@ -11,10 +11,9 @@ const map = new maplibregl.Map({
 });
 
 map.on('load', () => {
-
     map.addSource('grid', {
         type: 'vector',
-        url: 'http://localhost:3000/grid',
+        tiles: ["https://gtitov.github.io/martin-maplibre-map/grid/{z}/{x}/{y}.pbf"],
         promoteId: 'id'
     })
     map.addLayer({
@@ -40,25 +39,23 @@ map.on('load', () => {
         }
     })
 
-    map.addSource('landsat', {
-        type: 'raster',
-        url: 'http://localhost:3000/LC09_L2SP_20250404-rendered-2',
-        tileSize: 256
-    })
-    map.addLayer({
-        id: 'landsat-layer',
-        source: 'landsat',
-        type: 'raster',
-        layout: {
-            visibility: 'none'
-        }
-    })
+    // map.addSource('landsat', {
+    //     type: 'raster',
+    //     url: 'http://localhost:3000/LC09_L2SP_20250404-rendered-2',
+    //     tileSize: 256
+    // })
+    // map.addLayer({
+    //     id: 'landsat-layer',
+    //     source: 'landsat',
+    //     type: 'raster',
+    //     layout: {
+    //         visibility: 'none'
+    //     }
+    // })
 
     map.addSource('oikonyms', {
         type: 'vector',
-        tiles: [
-            "http://localhost:3000/oikonyms/{z}/{x}/{y}"
-        ]
+        tiles: ["https://gtitov.github.io/martin-maplibre-map/oikonyms/{z}/{x}/{y}.pbf"],
     })
     map.addLayer({
         id: 'oikonyms-layer',
@@ -146,8 +143,8 @@ map.on('load', () => {
         map.setFilter("grid-layer", ["<", ["to-number", ["get", "sum_pop"]], filterValue])
     })
 
-    document.getElementById("landsat").addEventListener("change", (e) => {
-        const isVisible = e.target.checked ? 'visible' : 'none'
-        map.setLayoutProperty("landsat-layer", "visibility", isVisible)
-    })
+    // document.getElementById("landsat").addEventListener("change", (e) => {
+    //     const isVisible = e.target.checked ? 'visible' : 'none'
+    //     map.setLayoutProperty("landsat-layer", "visibility", isVisible)
+    // })
 })
