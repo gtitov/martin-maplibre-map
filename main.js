@@ -17,7 +17,7 @@ map.on("load", () => {
 
     map.addSource("grid", {
         type: "vector",
-        url: "http://localhost:3000/grid",
+        tiles: ["https://gtitov.github.io/martin-maplibre-map/grid/{z}/{x}/{y}.pbf"],
         promoteId: "id"
     })
     map.addLayer({
@@ -50,7 +50,7 @@ map.on("load", () => {
 
     map.addSource("oikonyms", {
         type: "vector",
-        tiles: ["http://localhost:3000/oikonyms/{z}/{x}/{y}"],
+        tiles: ["https://gtitov.github.io/martin-maplibre-map/oikonyms/{z}/{x}/{y}.pbf"],
         minzoom: 8
     })
     map.addLayer({
@@ -128,7 +128,7 @@ map.on("load", () => {
     });
 
 
-    map.on('mouseenter', 'grid-layer', (e) => {
+    map.on('mouseenter', 'grid-layer', () => {
         map.getCanvas().style.cursor = 'pointer'
     })
 
