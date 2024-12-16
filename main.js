@@ -128,7 +128,7 @@ map.on("load", () => {
     });
 
 
-    map.on('mouseenter', 'grid-layer', (e) => {
+    map.on('mouseenter', 'grid-layer', () => {
         map.getCanvas().style.cursor = 'pointer'
     })
 
