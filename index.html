@@ -6,15 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ойконимы</title>
   <link rel="stylesheet" href="style.css">
-  <script src='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js'></script>
   <link href='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css' rel='stylesheet' />
 </head>
 
 <body>
   <div id="map"></div>
-  <input type="number" id="filter" value="12000000"/>
+  <input type="number" id="filter" value="12000000" />
   <label for="filter">Фильтр по населению</label>
-  <script src="main.js"></script>
+  <input type="checkbox" id="landsat">
+  <label for="landsat">Снимок</label>
+  <script type="module" src="main.js"></script>
 </body>
 
 </html>
